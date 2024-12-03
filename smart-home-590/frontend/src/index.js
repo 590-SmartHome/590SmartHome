@@ -18,6 +18,7 @@ root.render(
       <Route path="login" element={<Login />} />
       <Route path="home" element={<Home />} />
       <Route path="settings" element={<Settings />} />
+      <Route path="settings" element={<Settings />} />
     </Route>
   </Routes>
 </BrowserRouter>
