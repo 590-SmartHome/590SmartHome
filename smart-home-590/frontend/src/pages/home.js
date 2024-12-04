@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import * as userApi from "../api/user.js"
+import * as api from "../api/api.js"
 
 function Home() {
   const [users, setUsers] = useState([{first_name: ""}]);
 
   useEffect(() => {
     async function getUsers() {
-      let data = await userApi.getUsers();
+      let data = await api.getUsers();
       if(data){
         setUsers(data)
       }
