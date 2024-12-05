@@ -1,11 +1,20 @@
-FROM node:18-bookworm-slim
 
+# Base image
+FROM node:18
+
+# Set working directory
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+RUN npm install
 
-RUN npm ci
-
+# Copy all server files
 COPY . .
 
-CMD [ "npm", "start" ]
+# Expose the server port
+EXPOSE 4004
+
+# Start the server
+CMD ["node", "server.js"]
+

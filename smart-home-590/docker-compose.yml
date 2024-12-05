@@ -1,49 +1,31 @@
-name: smart-home
-
 services:
   mongo:
-    image: mongo:7.0.12
+    image: mongo
     container_name: mongo
-    ports: 
-      - 27017:27017
-    volumes:
-      - mongo_data:/data/db
-    networks:
-      - smart-home
-
-  server:
-    build: 
-      context: ./server
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    networks:
-      - smart-home
     ports:
-      - 4004:4004
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build:
+      context: ./server
+    container_name: backend
+    ports:
+      - "4004:4004"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/Smart_Home
     depends_on:
       - mongo
-  
+
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    networks:
-      - smart-home
+    container_name: frontend
     ports:
-      - 3000:3000
+      - "3000:3000"
     depends_on:
-      - server 
+      - backend
 
 volumes:
-  mongo_data:
-networks:
-  smart-home:
-    driver: bridge
-    
+  mongo-data:

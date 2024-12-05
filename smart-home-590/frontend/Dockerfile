@@ -1,11 +1,19 @@
-FROM node:18-bookworm-slim
+# Base image
+FROM node:18
 
+# Set working directory
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+RUN npm install
 
-RUN npm ci
-
+# Copy all frontend files
 COPY . .
 
-CMD [ "npm", "start" , "--", "--host"]
+# Build the frontend for production
+RUN npm run build
+
+# Serve the frontend using a static server
+RUN npm install -g serve
+CMD ["serve", "-s", "build", "-l", "3000"]
