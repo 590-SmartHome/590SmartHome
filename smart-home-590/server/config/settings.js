@@ -1,5 +1,8 @@
+import * as dotenv from 'dotenv';
+dotenv.config()
+
 const mongoConfig = {
-  serverUrl: "mongodb://localhost:27017/",
-  database: "Smart-Home"
+  serverUrl: "mongodb://mongo:27017/",
+  database: "Smart_Home",
 };
 export {mongoConfig};
