@@ -5,7 +5,7 @@ services:
     image: mongo:7.0.12
     container_name: mongo
     ports: 
-      - 27017:27017
+      - 27017:2800
     volumes:
       - mongo_data:/data/db
     networks:
@@ -25,6 +25,21 @@ services:
       - 4004:4004
     depends_on:
       - mongo
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - smart-home
+    ports:
+      - 3000:3000
+    depends_on:
+      - server 
 
 volumes:
   mongo_data:

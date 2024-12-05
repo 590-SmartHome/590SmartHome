@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:5000";
+const URL = "http://localhost:4004";
 
 export async function getUsers() {
     const response = await axios.get(`${URL}/users`);

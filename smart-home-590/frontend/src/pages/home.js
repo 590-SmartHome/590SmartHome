@@ -23,7 +23,7 @@ function Home() {
               alt="Movie" />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">Welcome {users[0].first_name}!</h2>
+            <h2 class="card-title">Welcome User!</h2>
             <p><br/>
             email:
             </p>
