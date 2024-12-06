@@ -3,7 +3,11 @@ import { ObjectId } from "mongodb";
 
 const homeSchema = new mongoose.Schema({
     name: String,
+    homePassword: String,
     devices: Array[ObjectId],
+    users: Array[ObjectId]
   });
   
-  module.exports = mongoose.model("home", homeSchema);
+const Home = new mongoose.model("home", homeSchema);
+
+export default Home

@@ -3,7 +3,7 @@ import { error } from "console";
 
 const constructorMethod = (app) => {
   app.get("/", (req, res) => {
-    return res.status(200).json({status: "Server Healthy"});
+    return res.status(200).json({status: "Server Healthy!!!!!"});
   });
   app.use("/users", userRouter);
   app.use("*", (req, res) => {

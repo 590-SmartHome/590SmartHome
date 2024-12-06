@@ -6,4 +6,6 @@ const preferenceSchema = new mongoose.Schema({
     deviceSetting: String,
   });
   
-  module.exports = mongoose.model("preference", preferenceSchema);
+const Preference = new mongoose.model("Preference", preferenceSchema);
+
+export default Preference

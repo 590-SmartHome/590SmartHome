@@ -43,6 +43,7 @@ services:
 
 volumes:
   mongo_data:
+    driver: local
 networks:
   smart-home:
     driver: bridge

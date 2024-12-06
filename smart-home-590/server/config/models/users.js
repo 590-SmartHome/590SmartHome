@@ -11,5 +11,5 @@ const userSchema = new mongoose.Schema({
     homes: Array[ObjectId],
     preferences: Array[ObjectId],
   });
-  
-  module.exports = mongoose.model("user", userSchema);
+
+export const User = new mongoose.model("User", userSchema)
