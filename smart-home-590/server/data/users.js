@@ -1,6 +1,9 @@
 import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { validateId, validateUpdateUser, validateUser } from "../helpers/validation.js";
+import { validateId, validateLoginInfo, validateUpdateUser, validateUser } from "../helpers/validation.js";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 6;
 
 const getAllUsers = async () => {
     const userCollection = await users();
@@ -17,6 +20,22 @@ const getUserById = async (id) => {
     return myUser;
 }
 
+const loginUser = async (user) => {
+    user = validateLoginInfo(user)
+    const userCollection = await users(); 
+    const emailUser = await userCollection.findOne({ email: user.email});
+    if(emailUser){
+        let confirmation = await bcrypt.compare(user.hashedPassword, emailUser.hashedPassword)
+        if (confirmation) {
+            return emailUser;
+        }else{
+            throw "invalid login"
+        }
+    }else {
+        throw "No user with that email"
+    }
+}
+
 const createUser = async (user) => {
     user = validateUser(user);
     user.homes = []
@@ -24,6 +43,10 @@ const createUser = async (user) => {
     const userCollection = await users(); 
     const emailUser = await userCollection.findOne({ email: user.email});
     if(emailUser) throw "user exists with that email";
+        
+    const hash = await bcrypt.hash(user.hashedPassword, SALT_ROUNDS)
+    user.hashedPassword = hash;
+
     const insertInfo = await userCollection.insertOne(user);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add user";
@@ -63,4 +86,4 @@ const deleteUser = async (id) => {
     return deletionInfo;
 }
 
-export default {getAllUsers, getUserById, createUser, updateUser,  deleteUser}
+export default {loginUser, getAllUsers, getUserById, createUser, updateUser,  deleteUser}

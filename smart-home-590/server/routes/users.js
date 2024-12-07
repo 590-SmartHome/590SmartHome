@@ -1,8 +1,8 @@
 import {userData} from "../data/index.js";
 import express from "express";
-import { validateUser, validateId, validateUpdateUser } from "../helpers/validation.js";
-
+import { validateUser, validateId, validateUpdateUser, validateLoginInfo } from "../helpers/validation.js";
 const router = express.Router();
+
 
 router
 .route("/")
@@ -102,5 +102,29 @@ router
     return res.status(500).json({ error: e });
   }
 });
+
+router
+.route("/login")
+.post(async (req, res) => {
+  let user = req.body
+  if (!user || Object.keys(user).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "There are no fields in the request body" });
+  }
+  try {
+    user = validateLoginInfo(user);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ error: e });
+  }
+  try {
+    user = await userData.loginUser(user);
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+})
 
 export default router;

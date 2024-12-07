@@ -38,6 +38,14 @@ export async function deleteUser() {
     return response;
 }
 
+export async function verifyUser(user) {
+  try {
+    const response = await axios.post(`${URL}/users/login`, user)
+    return response;
+  } catch (e) {
+    throw `${e.response.data}`;
+  }
+}
 
 export async function getDevices() {
   const response = await axios.get(`${URL}/devices`);

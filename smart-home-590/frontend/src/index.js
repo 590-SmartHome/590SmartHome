@@ -4,7 +4,7 @@ import './index.css';
 import Home from './pages/home.js'
 import Login from './pages/login.js'
 import Layout from './pages/layout.js';
-import Register from './pages/register.js';
+import Landing from './pages/landing.js';
 import Settings from './pages/settings.js';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -14,10 +14,9 @@ root.render(
   <BrowserRouter>
   <Routes>
     <Route path="/" element={<Layout />}>
-      <Route index element={<Register />} />
+      <Route index element={<Landing />} />
       <Route path="login" element={<Login />} />
       <Route path="home" element={<Home />} />
-      <Route path="settings" element={<Settings />} />
       <Route path="settings" element={<Settings />} />
     </Route>
   </Routes>

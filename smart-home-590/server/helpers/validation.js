@@ -23,11 +23,23 @@ export function validateObjectIDArray(arr, name = "ObjectId") {
     return arr;
 }
 
+export function validateEmail(email) {
+    email = validateString(email, "email");
+    email = email.toLowerCase();
+    return email;
+}
+
+export function validateLoginInfo(user) {
+    user.email = validateEmail(user.email);
+    user.hashedPassword = validateString(user.hashedPassword, "hashedPassword");
+    return user;
+}
+
 export function validateUser(user) {
     user.username = validateString(user.username, "username");
-    user.email = validateString(user.email, "email");
+    user.email = validateEmail(user.email);
     user.hashedPassword = validateString(user.hashedPassword, "hashedPassword");
-    user.avatarUrl = validateString(user.avatarUrl, "avatarUrl");
+    //user.avatarUrl = validateString(user.avatarUrl, "avatarUrl");
     user.first_name = validateString(user.first_name, "first_name");
     user.last_name = validateString(user.last_name, "last_name");
     //user.homes = validateObjectIDArray(user.homes, "homeId")
@@ -37,7 +49,7 @@ export function validateUser(user) {
 
 export function validateUpdateUser(user) {
     if (user.username) {user.username = validateString(user.username, "username");}
-    if (user.email) {user.email = validateString(user.email, "email");}
+    if (user.email) {user.email = validateEmail(user.email, "email");}
     if (user.hashedPassword) {user.hashedPassword = validateString(user.hashedPassword, "hashedPassword");}
     if (user.avatarUrl) {user.avatarUrl = validateString(user.avatarUrl, "avatarUrl");}
     if (user.first_name) {user.first_name = validateString(user.first_name, "first_name");}
