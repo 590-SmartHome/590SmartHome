@@ -1,9 +1,8 @@
 import {userData} from "../data/index.js";
 import express from "express";
-import { validateString, validateUser, validateId } from "../helpers/validation.js";
+import { validateUser, validateId, validateUpdateUser } from "../helpers/validation.js";
 
 const router = express.Router();
-
 
 router
 .route("/")
@@ -72,13 +71,13 @@ router
       .json({ error: "There are no fields in the request body" });
   }
   try {
-    updateUser = validateString(updateUser);
+    updateUser = validateUpdateUser(updateUser);
   } catch (e) {
     console.log(e);
     return res.status(400).json({ error: e });
   }
   try {
-    user = await userData.updateUser(updateUser);
+    const user = await userData.updateUser(req.params.id, updateUser);
     res.status(200).json(user);
   } catch (error) {
     console.error(error);

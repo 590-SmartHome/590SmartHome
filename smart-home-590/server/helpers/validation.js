@@ -46,4 +46,43 @@ export function validateUpdateUser(user) {
     if (user.preferences) {user.preferences = validateObjectIDArray(user.preferences, "preferenceId")}
     return user;
 }
-  
+
+export function validateHome(home) {
+    home.name = validateString(home.name, "name");
+    home.hashedPassword = validateString(home.hashedPassword, "hashedPassword");
+    return home;
+}
+
+export function validateUpdateHome(home) {
+    if (home.name) {home.name = validateString(home.name, "name");}
+    if (home.hashedPassword) {home.hashedPassword = validateString(home.hashedPassword, "hashedPassword");}
+    if (home.devices) {home.devices = validateObjectIDArray(home.devices, "deviceId")}
+    if (home.users) {home.users = validateObjectIDArray(home.users, "userId")}
+    return home;
+}
+
+export function validateDevice(device) {
+    device.name = validateString(device.name, "name");
+    device.type = validateString(device.type, "type");
+    device.setting = validateString(device.setting, "setting");
+    return device;
+}
+
+export function validateUpdateDevice(device) {
+    if (device.name) {device.name = validateString(device.name, "name");}
+    if (device.type) {device.type = validateString(device.type, "type");}
+    if (device.setting) {device.setting = validateString(device.setting, "setting");}
+    return device;
+}
+
+export function validatePreference(preference) {
+    preference.deviceId = validateString(preference.deviceId, "deviceId");
+    preference.deviceSetting = validateString(preference.deviceSetting, "deviceSetting");
+    return preference;
+}
+
+export function validateUpdatePreference(preference) {
+    if (preference.deviceId) {preference.deviceId = validateString(preference.deviceId, "deviceId");}
+    if (preference.deviceSetting) {preference.deviceSetting = validateString(preference.deviceSetting, "deviceSetting");}
+    return preference;
+}

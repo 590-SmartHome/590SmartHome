@@ -1,7 +1,6 @@
 import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { validateId, validateUpdateUser, validateUser } from "../helpers/validation.js";
-import preferences from "./preferences.js";
 
 const getAllUsers = async () => {
     const userCollection = await users();
@@ -23,6 +22,8 @@ const createUser = async (user) => {
     user.homes = []
     user.preferences = []
     const userCollection = await users(); 
+    const emailUser = await userCollection.findOne({ email: user.email});
+    if(emailUser) throw "user exists with that email";
     const insertInfo = await userCollection.insertOne(user);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add user";
