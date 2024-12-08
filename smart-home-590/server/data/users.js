@@ -29,7 +29,7 @@ const loginUser = async (user) => {
         if (confirmation) {
             return emailUser;
         }else{
-            throw "invalid login"
+            throw "incorrect password"
         }
     }else {
         throw "No user with that email"

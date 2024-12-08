@@ -20,6 +20,7 @@ export function Login() {
             let response = await verifyUser(user);
             if(response.status==200){
                 navigate("/home")
+                sessionStorage.setItem("User", response.data)
             }
         } catch (error) {
             alert(error)

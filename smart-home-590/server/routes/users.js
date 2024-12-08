@@ -3,6 +3,10 @@ import express from "express";
 import { validateUser, validateId, validateUpdateUser, validateLoginInfo } from "../helpers/validation.js";
 const router = express.Router();
 
+import jwt from "jsonwebtoken";
+const { sign, verify } = jwt;
+import * as dotenv from 'dotenv';
+dotenv.config()
 
 router
 .route("/")
@@ -120,7 +124,9 @@ router
   }
   try {
     user = await userData.loginUser(user);
-    res.status(200).json(user);
+    console.log(process.env.SECRETKEY)
+    const token = sign(user, process.env.SECRETKEY)
+    res.status(200).json(token);
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
