@@ -1,38 +1,21 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import Home from './pages/home.js'
-import Login from './pages/login.js'
-import Layout from './pages/layout.js';
-import Landing from './pages/landing.js';
-import Settings from './pages/settings.js';
-import reportWebVitals from './reportWebVitals';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
 import axios from 'axios';
+import './index.css';
+import App from './App';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-/* 
-useEffect(()=>{
-  let token = sessionStorage.getItem("User")
-  if(token){
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`       
-  }
-  },[])
- */
+console.log("generating app")
+let token = sessionStorage.getItem("User");
+if(token){
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;       
+}
+
 root.render(
-  <BrowserRouter>
-  <Routes>
-    <Route path="/" element={<Layout />}>
-      <Route index element={<Landing />} />
-      <Route path="login" element={<Login />} />
-      <Route path="home" element={<Home />} />
-      <Route path="settings" element={<Settings />} />
-    </Route>
-  </Routes>
-</BrowserRouter>
+    <React.StrictMode>
+      <App></App>
+    </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+

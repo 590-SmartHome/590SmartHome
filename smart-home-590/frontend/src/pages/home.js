@@ -2,13 +2,19 @@ import React, { useState, useEffect } from "react";
 import * as api from "../api/api.js"
 
 function Home() {
-  const [users, setUsers] = useState([{first_name: ""}]);
+  const [users, setUsers] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    username: "",
+    avatarUrl: ""
+  });
 
   useEffect(() => {
     async function getUsers() {
       let data = await api.getUsers();
       if(data){
-        setUsers(data)
+        setUsers(data[0])
       }
     }
     getUsers();
@@ -23,9 +29,9 @@ function Home() {
               alt="Movie" />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">Welcome User!</h2>
+            <h2 class="card-title">Welcome {users.first_name}!</h2>
             <p><br/>
-            email:
+            email: {users.email}
             </p>
             <div class="card-actions justify-end">
               <button class="btn btn-primary">Watch</button>
