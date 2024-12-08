@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Navbar () {
+     const navigate = useNavigate()
+    function handleLogout() {
+      sessionStorage.removeItem("User")
+      navigate("/")
+    }
+
     return (
       <div>
         <div class="navbar bg-base-100">
@@ -25,7 +31,7 @@ export function Navbar () {
           class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
           <li><Link to="/home">Homepage</Link></li>
           <li><Link to="/settings">Settings</Link></li>
-          <li><a >Logout</a></li>
+          <li><button onClick={handleLogout}>Logout</button></li>
         </ul>
       </div>
     </div>

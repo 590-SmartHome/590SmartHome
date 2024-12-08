@@ -31,10 +31,10 @@ router
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).send(error);
   }
 })
-.post(verifyToken, async (req, res) => {
+.post(async (req, res) => {
   let user = req.body
   if (!user || Object.keys(user).length === 0) {
     return res
@@ -52,7 +52,7 @@ router
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).send(error);
   }
 });
 
@@ -100,7 +100,7 @@ router
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).send(error);
   }
 })
 .delete(verifyToken, async (req, res) => {
@@ -118,7 +118,8 @@ router
     const removedUser = await userData.deleteUser(req.params.id);
     return res.status(200).json({ _id: req.params.id, deleted: true });
   } catch (e) {
-    return res.status(500).json({ error: e });
+    console.error(error);
+    res.status(500).send(error);
   }
 });
 
@@ -139,7 +140,6 @@ router
   }
   try {
     user = await userData.loginUser(user);
-    console.log(process.env.SECRETKEY)
     const token = sign(user, process.env.SECRETKEY)
     res.status(200).json(token);
   } catch (error) {

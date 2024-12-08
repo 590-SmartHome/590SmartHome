@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import * as api from "../api/api.js"
+import * as api from "../api/api.js";
+import * as jwt_decode from "jwt-decode";
+import { HomesPanel } from "../components/homesPanel.js";
 
 function Home() {
-  const [users, setUsers] = useState({
+  const [user, setUser] = useState({
     first_name: "",
     last_name: "",
     email: "",
@@ -11,33 +13,31 @@ function Home() {
   });
 
   useEffect(() => {
-    async function getUsers() {
-      let data = await api.getUsers();
-      if(data){
-        setUsers(data[0])
-      }
+    async function loadUserData() {
+      const token = sessionStorage.getItem("User")
+      const decodedUser = jwt_decode.jwtDecode(token);
+      const myUser = await api.getUser(decodedUser._id)
+      setUser(decodedUser)
     }
-    getUsers();
+    loadUserData();
   }, []);
 
     return (
      <div>
-        <div class="card card-side bg-base-100 shadow-xl">
+        <div className="card card-side bg-base-100 shadow-xl">
           <figure>
             <img
               src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
               alt="Movie" />
           </figure>
-          <div class="card-body">
-            <h2 class="card-title">Welcome {users.first_name}!</h2>
-            <p><br/>
-            email: {users.email}
-            </p>
-            <div class="card-actions justify-end">
-              <button class="btn btn-primary">Watch</button>
+          <div className="card-body">
+            <h2 className="card-title">Welcome {user.first_name}!</h2>
+            <p>Welcome to your home dashboard!</p>
+            <div className="card-actions justify-end">
             </div>
           </div>
         </div>
+        <HomesPanel></HomesPanel>
      </div>
     );
   }

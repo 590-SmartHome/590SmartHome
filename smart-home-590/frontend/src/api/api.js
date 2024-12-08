@@ -23,8 +23,12 @@ export async function getUser(id) {
 }
 
 export async function createUser(user) {
+  try {
     const response = await axios.post(`${URL}/users`, user);
     return response;
+  } catch (e) {
+    throw `${e.response.data}`;
+  }
 }
 
 export async function updateUser(id, user) {
