@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as api from "../api/api.js";
 import * as jwt_decode from "jwt-decode";
-import { HomesPanel } from "../components/homesPanel.js";
+import { HomesPanel } from "../components/HomesPanel.js";
 
 function Home() {
   const [user, setUser] = useState({
