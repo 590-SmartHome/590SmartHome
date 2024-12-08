@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Home from './pages/home.js'
@@ -8,8 +8,17 @@ import Landing from './pages/landing.js';
 import Settings from './pages/settings.js';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+/* 
+useEffect(()=>{
+  let token = sessionStorage.getItem("User")
+  if(token){
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`       
+  }
+  },[])
+ */
 root.render(
   <BrowserRouter>
   <Routes>

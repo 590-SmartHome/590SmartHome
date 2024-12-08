@@ -8,9 +8,24 @@ const { sign, verify } = jwt;
 import * as dotenv from 'dotenv';
 dotenv.config()
 
+function verifyToken(request, response, next) {
+  const authHeaders = request.headers["authorization"];
+  const token = authHeaders && authHeaders.split(" ")[1];
+  if(!token){
+    return response.status(401).json({error: "Authentication token is missing"})
+  }
+  verify(token, process.env.SECRETKEY, (error, user) =>{
+    if(error){
+      return response.status(403).json({error: "Invalid token"})
+    }
+    request.body.user = user;
+    next()
+  })
+}
+
 router
 .route("/")
-.get(async (req, res) => {
+.get(verifyToken, async (req, res) => {
   try {
     const users = await userData.getAllUsers();
     res.status(200).json(users);
@@ -19,7 +34,7 @@ router
     res.status(500).send("Server Error");
   }
 })
-.post(async (req, res) => {
+.post(verifyToken, async (req, res) => {
   let user = req.body
   if (!user || Object.keys(user).length === 0) {
     return res
@@ -43,7 +58,7 @@ router
 
 router
 .route("/:id")
-.get(async (req, res) => {
+.get(verifyToken, async (req, res) => {
   try {
     req.params.id = validateId(req.params.id);
   } catch (e) {
@@ -57,7 +72,7 @@ router
     return res.status(404).json({ error: e });
   }
 })
-.put(async (req, res) => {
+.put(verifyToken, async (req, res) => {
   try {
     req.params.id = validateId(req.params.id);
   } catch (e) {
@@ -88,7 +103,7 @@ router
     res.status(500).send("Server Error");
   }
 })
-.delete(async (req, res) => {
+.delete(verifyToken, async (req, res) => {
   try {
     req.params.id = validateId(req.params.id);
   } catch (e) {

@@ -3,6 +3,10 @@ import deviceRouter from "./devices.js";
 import homeRouter from "./homes.js";
 import preferenceRouter from "./preferences.js";
 import { error } from "console";
+import jwt from "jsonwebtoken";
+const { sign, verify } = jwt;
+import * as dotenv from 'dotenv';
+dotenv.config()
 
 const constructorMethod = (app) => {
   app.get("/", (req, res) => {
