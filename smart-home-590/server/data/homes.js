@@ -1,6 +1,9 @@
 import { homes } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import {validateId, validateHome, validateUpdateHome } from "../helpers/validation.js";
+import {validateId, validateHome, validateUpdateHome, validateJoinHomeInfo } from "../helpers/validation.js";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 6;
 
 const getAllHomes = async () => {
     const homeCollection = await homes();
@@ -17,11 +20,25 @@ const getHomeById = async (id) => {
     return myHome;
 }
 
+const getHomesByUserId = async (userId) => {
+    userId = validateId(userId);
+    const homeCollection = await homes();
+    const myHomes = await homeCollection.find({ "users._id": new ObjectId(userId) }).toArray();
+    return myHomes;
+}
+
 const createHome = async (home) => {
     home = validateHome(home);
     home.devices = []
     home.users = []
     const homeCollection = await homes(); 
+
+    const nameHome = await homeCollection.findOne({ name: home.name});
+    if(nameHome) throw "home exists with that name";
+    
+    const hash = await bcrypt.hash(home.hashedPassword, SALT_ROUNDS)
+    home.hashedPassword = hash;
+
     const insertInfo = await homeCollection.insertOne(home);
     if (!insertInfo.acknowledged || !insertInfo.insertedId)
         throw "Could not add home";
@@ -48,6 +65,30 @@ const updateHome = async (id, home) => {
     return updatedInfo;
 }
 
+const joinHome = async (login, userId) => {
+    userId = validateId(userId);
+    login = validateJoinHomeInfo(login);
+    const homeCollection = await homes(); 
+    const myHome = await homeCollection.findOne({ name: login.name});
+    if(myHome){
+        let confirmation = await bcrypt.compare(login.hashedPassword, myHome.hashedPassword)
+        if (confirmation) {
+            const updatedInfo = await homeCollection.findOneAndUpdate(
+                { _id: myHome._id },
+                { $addToSet: { users:  userId} },
+                { returnDocument: "after" }
+              );
+              if (!updatedInfo) {
+                throw "could not create device successfully";
+            }
+            return updatedInfo;
+        }else{
+            throw "incorrect password"
+        }
+    }else {
+        throw "No home with that name"
+    }
+}
 
 const deleteHome = async (id) => {
     id = validateId(id);
@@ -62,4 +103,4 @@ const deleteHome = async (id) => {
 }
 
 
-export default {getAllHomes, getHomeById, createHome, updateHome, deleteHome}
+export default {joinHome, getHomesByUserId, getAllHomes, getHomeById, createHome, updateHome, deleteHome}

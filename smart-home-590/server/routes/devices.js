@@ -5,10 +5,10 @@ import express from "express";
 const router = express.Router();
 
 router
-.route("/")
+.route("/:homeId")
 .get(async (req, res) => {
   try {
-    const devices = await deviceData.getAllDevices();
+    const devices = await deviceData.getAllDevices(req.params.homeId);
     res.status(200).json(devices);
   } catch (error) {
     console.error(error);
@@ -29,7 +29,7 @@ router
     return res.status(400).json({ error: e });
   }
   try {
-    device = await deviceData.createDevice(device);
+    device = await deviceData.createDevice(req.params.homeId, device);
     res.status(200).json(device);
   } catch (error) {
     console.error(error);

@@ -7,10 +7,10 @@ const router = express.Router();
 
 
 router
-.route("/")
+.route("/:userId")
 .get(async (req, res) => {
   try {
-    const preferences = await preferenceData.getAllPreferences();
+    const preferences = await preferenceData.getAllPreferences(req.params.userId);
     res.status(200).json(preferences);
   } catch (error) {
     console.error(error);
@@ -31,7 +31,7 @@ router
     return res.status(400).json({ error: e });
   }
   try {
-    preference = await preferenceData.createPreference(preference);
+    preference = await preferenceData.createPreference(req.params.userId, preference);
     res.status(200).json(preference);
   } catch (error) {
     console.error(error);

@@ -12,7 +12,7 @@ router
     res.status(200).json(homes);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).send(e);
   }
 })
 .post(async (req, res) => {
@@ -33,7 +33,7 @@ router
     res.status(200).json(home);
   } catch (e) {
     console.error(e);
-    res.status(500).send("Server Error");
+    res.status(500).send(e);
   }
 });
 
@@ -81,7 +81,7 @@ router
     res.status(200).json(home);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Server Error");
+    res.status(500).send(error);
   }
 })
 .delete(async (req, res) => {
@@ -100,7 +100,7 @@ router
     return res.status(200).json({ _id: req.params.id, deleted: true });
   } catch (e) {
     console.log(e)
-    return res.status(500).json({ error: e });
+    res.status(500).send(e);
   }
 });
 

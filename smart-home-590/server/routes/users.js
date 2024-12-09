@@ -1,6 +1,6 @@
-import {userData} from "../data/index.js";
+import {homeData, userData} from "../data/index.js";
 import express from "express";
-import { validateUser, validateId, validateUpdateUser, validateLoginInfo } from "../helpers/validation.js";
+import { validateUser, validateId, validateUpdateUser, validateLoginInfo, validateJoinHomeInfo } from "../helpers/validation.js";
 const router = express.Router();
 
 import jwt from "jsonwebtoken";
@@ -147,5 +147,45 @@ router
     res.status(500).send(error);
   }
 })
+
+
+router
+.route("/:id/homes")
+.get(async (req, res) => {
+  try {
+    req.params.id = validateId(req.params.id);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json({ error: e });
+  }
+  try {
+    const homes = await homeData.getHomesByUserId(req.params.id);
+    return res.status(200).json(homes);
+  } catch (e) {
+    return res.status(404).json({ error: e });
+  }
+})
+.post(async (req, res) => {
+  let login = req.body
+  if (!login || Object.keys(login).length === 0) {
+    return res
+      .status(400)
+      .json({ error: "There are no fields in the request body" });
+  }
+  try {
+    login = validateJoinHomeInfo(login);
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ error: e });
+  }
+  try {
+    let home = await homeData.joinHome(login, req.params.id);
+    res.status(200).json(home);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+})
+
 
 export default router;

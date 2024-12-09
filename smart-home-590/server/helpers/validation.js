@@ -35,6 +35,12 @@ export function validateLoginInfo(user) {
     return user;
 }
 
+export function validateJoinHomeInfo(login) {
+    login.name = validateEmail(login.name);
+    login.hashedPassword = validateString(login.hashedPassword, "hashedPassword");
+    return login;
+}
+
 export function validateUser(user) {
     user.username = validateString(user.username, "username");
     user.email = validateEmail(user.email);
@@ -42,9 +48,25 @@ export function validateUser(user) {
     //user.avatarUrl = validateString(user.avatarUrl, "avatarUrl");
     user.first_name = validateString(user.first_name, "first_name");
     user.last_name = validateString(user.last_name, "last_name");
-    //user.homes = validateObjectIDArray(user.homes, "homeId")
-    //user.preferences = validateObjectIDArray(user.preferences, "preferenceId")
     return user;
+}
+
+function validatePreferenceArr(arr){
+    if (typeof arr == "undefined") throw "must input array";
+    if (!Array.isArray(arr)) throw `must input an array of preferences`;
+    arr.forEach(preference => {
+        preference = validatePreference(preference)
+    });
+    return arr;
+}
+
+function validateDeviceArr(arr){
+    if (typeof arr == "undefined") throw "must input array";
+    if (!Array.isArray(arr)) throw `must input an array of devices`;
+    arr.forEach(device => {
+        device = validateDevice(device)
+    });
+    return arr;
 }
 
 export function validateUpdateUser(user) {
@@ -54,8 +76,7 @@ export function validateUpdateUser(user) {
     if (user.avatarUrl) {user.avatarUrl = validateString(user.avatarUrl, "avatarUrl");}
     if (user.first_name) {user.first_name = validateString(user.first_name, "first_name");}
     if (user.last_name) {user.last_name = validateString(user.last_name, "last_name");}
-    if (user.homes) {user.homes = validateObjectIDArray(user.homes, "homeId")}
-    if (user.preferences) {user.preferences = validateObjectIDArray(user.preferences, "preferenceId")}
+    if (user.preferences) {user.preferences = validatePreferenceArr(user.preferences)}
     return user;
 }
 
@@ -68,8 +89,8 @@ export function validateHome(home) {
 export function validateUpdateHome(home) {
     if (home.name) {home.name = validateString(home.name, "name");}
     if (home.hashedPassword) {home.hashedPassword = validateString(home.hashedPassword, "hashedPassword");}
-    if (home.devices) {home.devices = validateObjectIDArray(home.devices, "deviceId")}
-    if (home.users) {home.users = validateObjectIDArray(home.users, "userId")}
+    //if (home.users) {home.users = validateObjectIDArray(home.users, "userId")}
+    if (home.devices) {home.devices = validateDeviceArr(home.devices)}
     return home;
 }
 

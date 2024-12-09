@@ -14,5 +14,5 @@ const getCollection = (collection) => {
 
 export const users = getCollection("users");
 export const homes = getCollection("homes");
-export const devices = getCollection("devices");
-export const preferences = getCollection("preferences");
+//export const devices = getCollection("devices");
+//export const preferences = getCollection("preferences");

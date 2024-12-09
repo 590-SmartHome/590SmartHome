@@ -1,63 +1,93 @@
-import { devices } from "../config/mongoCollections.js";
+import { homes } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
+import { homeData } from "./index.js";
 import { validateId, validateDevice, validateUpdateDevice } from "../helpers/validation.js";
 
-const getAllDevices = async () => {
-    const deviceCollection = await devices();
-    const myDevices = await deviceCollection.find({}).toArray();
+const getAllDevices = async (homeId) => {
+    homeId = validateId(homeId);
+    const myHome = await homeData.getHomeById();
+    const myDevices = myHome.devices;
     return myDevices;
 }
 
-const getDeviceById = async (id) => {
-    id = validateId(id);
-    const deviceCollection = await devices();
-    const myDevice = await deviceCollection.findOne({ _id: new ObjectId(id) });
-    if (myDevice === null) throw "No device with that id";
-    myDevice._id = myDevice._id.toString();
-    return myDevice;
-}
-
-const createDevice = async (device) => {
-    device = validateDevice(device);
-    const deviceCollection = await devices(); 
-    const insertInfo = await deviceCollection.insertOne(device);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
-        throw "Could not add device";
-
-    const newId = insertInfo.insertedId.toString();
-    const newDevice = await getDeviceById(newId);
-    return newDevice;
-}
-
-const updateDevice = async (id, device) => {
-    id = validateId(id);
-    device = validateUpdateDevice(device)
-    const deviceCollection = await devices();
-    const updatedInfo = await deviceCollection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
-        { $set: device },
-        { returnDocument: "after" }
+const getDeviceById = async (deviceId) => {
+    homeId = validateId(deviceId);
+    const homeCollection = await devices();
+    let myDevice = await homeCollection.findOne(
+        {
+          "devices._id": new ObjectId(deviceId),
+        },
+        {
+          projection: {
+            _id: 0,
+            "devices.$": 1,
+          },
+        }
       );
+      if (myDevice === null) throw "No device with that id";
+    return myDevice.devices[0];
+}
 
+const createDevice = async (homeId, device) => {
+    homeId = validateId(homeId);
+    device = validateDevice(device);
+    device["_id"] = new ObjectId();
+
+    const homeCollection = await homes();
+
+    const updatedInfo = await homeCollection.findOneAndUpdate(
+        { _id: new ObjectId(homeId) },
+        {
+            $addToSet: { devices: device },
+        },
+        { returnDocument: "after" }
+    );
     if (!updatedInfo) {
-        throw "could not update device successfully";
+        throw "could not create device successfully";
     }
-    updatedInfo._id = updatedInfo._id.toString();
     return updatedInfo;
 }
 
+const updateDevice = async (deviceId, device) => {
+    deviceId = validateId(deviceId);
+    device = validateUpdateDevice(device);
 
-const deleteDevice = async (id) => {
-    id = validateId(id);
-    const deviceCollection = await devices();
-    const deletionInfo = await deviceCollection.findOneAndDelete({
-        _id: new ObjectId(id),
-      });
-    
-    if (!deletionInfo) {
-        throw `Could not delete device with id of ${id}`;
+    let myDevice = await getDeviceById(deviceId);
+    let myUpdateObject = {};
+    for (let [key, value] of Object.entries(myDevice)) {
+        myUpdateObject[`devices.$.${key}`] = value;
     }
-    return deletionInfo;
+
+    const teamCollection = await teams();
+    const updateOne = await teamCollection.findOneAndUpdate(
+      { "devices._id": new ObjectId(deviceId) },
+      {
+        $set: myUpdateObject,
+      },
+      { returnDocument: "after" }
+    );
+    if (!updateOne) {
+      throw "could not update device successfully";
+    }
+
+    return updateOne;
+}
+
+const deleteDevice = async (deviceId) => {
+    deviceId = validateId(deviceId);
+    let myDevice = await getDeviceById(deviceId);
+    const homeCollection = await homes();
+    const deletedDevice = await homeCollection.findOneAndUpdate(
+      {
+        "devices._id": new ObjectId(deviceId),
+      },
+      { $pull: { devices: myDevice } },
+      { returnDocument: "after" }
+    );
+    if (!deletedDevice) {
+      throw `Could not delete device with id of ${deviceId}`;
+    }
+    return deletedDevice;
 }
 
 export default {getAllDevices, getDeviceById, createDevice, updateDevice, deleteDevice}

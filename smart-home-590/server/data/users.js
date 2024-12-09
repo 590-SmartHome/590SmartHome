@@ -38,7 +38,6 @@ const loginUser = async (user) => {
 
 const createUser = async (user) => {
     user = validateUser(user);
-    user.homes = []
     user.preferences = []
     const userCollection = await users(); 
     const emailUser = await userCollection.findOne({ email: user.email});
