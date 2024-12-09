@@ -32,9 +32,13 @@ export async function createUser(user) {
 }
 
 export async function updateUser(id, user) {
-    const response = await axios.get(`${URL}/users/${id}`, user);
+  try{
+    const response = await axios.patch(`${URL}/users/${id}`, user);
     return response;
-    
+  } catch (e) {
+    console.log(e)
+    throw `${e.response.statusText}`;
+  } 
 }
 
 export async function deleteUser() {
@@ -77,7 +81,7 @@ export async function createDevice(device) {
 }
 
 export async function updateDevice(id, device) {
-  const response = await axios.get(`${URL}/devices/${id}`, device);
+  const response = await axios.put(`${URL}/devices/${id}`, device);
   return response;
   
 }
@@ -114,7 +118,7 @@ export async function createHome(home) {
 }
 
 export async function updateHome(id, home) {
-  const response = await axios.get(`${URL}/homes/${id}`, home);
+  const response = await axios.put(`${URL}/homes/${id}`, home);
   return response;
   
 }
@@ -151,7 +155,7 @@ export async function createPreference(preference) {
 }
 
 export async function updatePreference(id, preference) {
-  const response = await axios.get(`${URL}/preferences/${id}`, preference);
+  const response = await axios.put(`${URL}/preferences/${id}`, preference);
   return response;
   
 }

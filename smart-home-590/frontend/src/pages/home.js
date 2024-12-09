@@ -32,6 +32,7 @@ function Home() {
       loadUserData();
   }, []);
     //console.log(homes[home]);
+    
     return (
      <div className="flex gap-5 padding-10 w-full h-full">
         <div className="card card-side bg-base-100 shadow-xl">

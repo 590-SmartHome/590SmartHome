@@ -5,7 +5,8 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require('daisyui'),
+    require("@tailwindcss/typography"),
+    require('daisyui')
   ],
   daisyui: {
     themes: ["emerald", "dim"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

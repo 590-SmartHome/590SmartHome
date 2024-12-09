@@ -72,7 +72,7 @@ router
     return res.status(404).json({ error: e });
   }
 })
-.put(verifyToken, async (req, res) => {
+.patch(verifyToken, async (req, res) => {
   try {
     req.params.id = validateId(req.params.id);
   } catch (e) {
@@ -97,7 +97,8 @@ router
   }
   try {
     const user = await userData.updateUser(req.params.id, updateUser);
-    res.status(200).json(user);
+    const token = sign(user, process.env.SECRETKEY)
+    res.status(200).json(token);
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
@@ -140,7 +141,7 @@ router
   }
   try {
     user = await userData.loginUser(user);
-    const token = sign(user, process.env.SECRETKEY)
+    const token = sign(user, process.env.SECRETKEY);
     res.status(200).json(token);
   } catch (error) {
     console.error(error);

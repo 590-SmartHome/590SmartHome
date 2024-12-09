@@ -16,7 +16,7 @@ export function HomesPanel ({home = {
             <div className="card-body">
                 <h2 className="card-title">{home.name}</h2>
                 <div className="flex gap-5 w-full">
-                    <div className="grid-cols-3 w-2/3">
+                    <div className="grid grid-cols-3 gap-5 w-2/3">
                         {home.devices.map((device => {
                             return(
                                 <DeviceWidget name={device.name} type= {device.type} setting= {device.setting}></DeviceWidget>

@@ -69,6 +69,7 @@ const updateUser = async (id, user) => {
         throw "could not update user successfully";
     }
     updatedInfo._id = updatedInfo._id.toString();
+    console.log(updatedInfo)
     return updatedInfo;
 }
 
