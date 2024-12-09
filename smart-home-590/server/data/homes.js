@@ -23,7 +23,7 @@ const getHomeById = async (id) => {
 const getHomesByUserId = async (userId) => {
     userId = validateId(userId);
     const homeCollection = await homes();
-    const myHomes = await homeCollection.find({ "users._id": new ObjectId(userId) }).toArray();
+    const myHomes = await homeCollection.find({ users: {$all: [userId]} }).toArray();
     return myHomes;
 }
 

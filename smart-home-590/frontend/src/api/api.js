@@ -88,8 +88,8 @@ export async function deleteDevice() {
 }
 
 
-export async function getHomes() {
-  const response = await axios.get(`${URL}/homes`);
+export async function getHomes(userId) {
+  const response = await axios.get(`${URL}/users/${userId}/homes`);
     if(response.status === 200){
       return response.data;
     }
