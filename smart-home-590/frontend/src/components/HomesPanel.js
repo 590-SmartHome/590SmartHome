@@ -4,20 +4,28 @@ import * as jwt_decode from "jwt-decode";
 import { DeviceWidget } from "./DeviceWidget.js";
 import { MembersPanel } from "./MembersPanel.js";
 
-export function HomesPanel ({homes = [{}]}) {
-    const [home, setHome] = useState(0);
+export function HomesPanel ({home = {
+    name: "", 
+    "devices": [{name: "", type: "", setting: ""}],
+    "users": [{name: "", _id:""}]
+    }}) {
+    
     return (
         <>
-        <div className="card bg-base-100 w-3/4 shadow-xl">
+        <div className="card bg-base-200 padding-5 w-full h-full shadow-xl">
             <div className="card-body">
-                <h2 className="card-title">{homes[home].name}</h2>
-                <div className="flex">
-                    {homes[home].devices.map((device => {
-                        return(
-                            <DeviceWidget device={{name: device.name, type: device.type, name: device.setting,}}></DeviceWidget>
-                        )
-                    }))}
-                    <MembersPanel name={homes[home].name} users={homes[home].users}></MembersPanel>
+                <h2 className="card-title">{home.name}</h2>
+                <div className="flex gap-5 w-full">
+                    <div className="grid-cols-3 w-2/3">
+                        {home.devices.map((device => {
+                            return(
+                                <DeviceWidget name={device.name} type= {device.type} setting= {device.setting}></DeviceWidget>
+                            )
+                        }))}
+                    </div>
+                    <div className="justify-self-end w-1/3">
+                        <MembersPanel name={home.name} users= {home.users}></MembersPanel>
+                    </div>
                 </div>
             </div>
         </div>  

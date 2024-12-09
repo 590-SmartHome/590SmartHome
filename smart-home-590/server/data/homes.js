@@ -1,7 +1,8 @@
-import { homes } from "../config/mongoCollections.js";
+import { homes, users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import {validateId, validateHome, validateUpdateHome, validateJoinHomeInfo } from "../helpers/validation.js";
 import bcrypt from "bcrypt";
+import { userData } from "./index.js";
 
 const SALT_ROUNDS = 6;
 
@@ -23,7 +24,7 @@ const getHomeById = async (id) => {
 const getHomesByUserId = async (userId) => {
     userId = validateId(userId);
     const homeCollection = await homes();
-    const myHomes = await homeCollection.find({ users: {$all: [userId]} }).toArray();
+    const myHomes = await homeCollection.find({ "users._id": userId }).toArray();
     return myHomes;
 }
 
@@ -68,14 +69,16 @@ const updateHome = async (id, home) => {
 const joinHome = async (login, userId) => {
     userId = validateId(userId);
     login = validateJoinHomeInfo(login);
+    const userCollection = await users();
     const homeCollection = await homes(); 
+    const myUser = await userData.getUserById(userId);
     const myHome = await homeCollection.findOne({ name: login.name});
     if(myHome){
         let confirmation = await bcrypt.compare(login.hashedPassword, myHome.hashedPassword)
         if (confirmation) {
             const updatedInfo = await homeCollection.findOneAndUpdate(
                 { _id: myHome._id },
-                { $addToSet: { users:  userId} },
+                { $addToSet: { users:  {_id: userId, name: myUser.first_name} }},
                 { returnDocument: "after" }
               );
               if (!updatedInfo) {
