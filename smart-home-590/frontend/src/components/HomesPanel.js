@@ -44,7 +44,7 @@ export function HomesPanel ({home = {
                         </form>
                     </div>
                     <div className="justify-self-end w-1/3">
-                        <MembersPanel name={home.name} users= {home.users}></MembersPanel>
+                        <MembersPanel name={home.name} users= {home.users} id={userId}></MembersPanel>
                     </div>
                 </div>
             </div>

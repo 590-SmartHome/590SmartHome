@@ -26,7 +26,7 @@ export function ThermoStat ({id, name, setting}) {
                 <div className="card-actions justify-end">
                     <form onSubmit={handleSubmit}>
                         <label> {deviceSetting}
-                        <input type="range" min={0} max="100" value={deviceSetting} onChange={handleChange} className="range range-sm" />
+                        <input type="range" min={50} max="90" value={deviceSetting} onChange={handleChange} className="range range-sm" />
                         </label>
                         <button type="submit" className="btn">Set Temperature</button>
                     </form>

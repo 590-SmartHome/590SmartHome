@@ -1,6 +1,6 @@
 import { UserWidget } from "./UserWidget.js";
 
-export function MembersPanel ({users, name}) {
+export function MembersPanel ({users, name, id}) {
 
     return (
         <>
@@ -9,11 +9,13 @@ export function MembersPanel ({users, name}) {
                 <h2 className="card-title">{name} Members</h2>
                 <div className="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4">
                     {users.map((user => {
-                        return(
-                            <div className="carousel-item">
-                                <UserWidget user={user}></UserWidget>
-                            </div>
-                        )
+                        if(user._id.toString() != id.toString()){
+                            return(
+                                <div className="carousel-item">
+                                    <UserWidget user={user}></UserWidget>
+                                </div>
+                            )
+                        }
                     }))} 
                 </div>
             </div>
