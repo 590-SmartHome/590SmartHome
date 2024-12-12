@@ -11,8 +11,8 @@ const getAllDevices = async (homeId) => {
 }
 
 const getDeviceById = async (deviceId) => {
-    homeId = validateId(deviceId);
-    const homeCollection = await devices();
+    deviceId = validateId(deviceId);
+    const homeCollection = await homes();
     let myDevice = await homeCollection.findOne(
         {
           "devices._id": new ObjectId(deviceId),
@@ -52,14 +52,14 @@ const updateDevice = async (deviceId, device) => {
     deviceId = validateId(deviceId);
     device = validateUpdateDevice(device);
 
-    let myDevice = await getDeviceById(deviceId);
+    //let myDevice = await getDeviceById(deviceId);
     let myUpdateObject = {};
-    for (let [key, value] of Object.entries(myDevice)) {
+    for (let [key, value] of Object.entries(device)) {
         myUpdateObject[`devices.$.${key}`] = value;
     }
 
-    const teamCollection = await teams();
-    const updateOne = await teamCollection.findOneAndUpdate(
+    const homeCollection = await homes();
+    const updateOne = await homeCollection.findOneAndUpdate(
       { "devices._id": new ObjectId(deviceId) },
       {
         $set: myUpdateObject,

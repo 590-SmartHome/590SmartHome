@@ -11,11 +11,11 @@ function Landing() {
         {!view ? 
         <>
           <Login></Login> 
-          <button onClick={()=> setView(!view)}>Create new Account</button>
+          <button className="btn" onClick={()=> setView(!view)}>Create new Account</button>
         </> : 
         <>
           <CreateUser></CreateUser>
-          <button onClick={()=> setView(!view)}>Login to existing account</button>
+          <button className="btn" onClick={()=> setView(!view)}>Login to existing account</button>
         </>
         }
      </>

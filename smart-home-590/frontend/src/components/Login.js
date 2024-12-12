@@ -32,8 +32,8 @@ export function Login() {
     return (
     <>
     <form onSubmit={handleSubmit} class= "flex flex-col">
-        <input class="input input-bordered w-full max-w-xs" onChange={handleChange} name="email" placeholder={"Email"} required></input>
-        <input class="input input-bordered w-full max-w-xs" onChange={handleChange} name="hashedPassword" type="password" placeholder={"Password"} required></input>
+        <input className="input input-bordered w-full max-w-xs" onChange={handleChange} name="email" placeholder={"Email"} required></input>
+        <input className="input input-bordered w-full max-w-xs" onChange={handleChange} name="hashedPassword" type="password" placeholder={"Password"} required></input>
         <button type="submit">Login</button>
     </form>
     </>

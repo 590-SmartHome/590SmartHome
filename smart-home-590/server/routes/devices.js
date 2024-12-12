@@ -5,7 +5,7 @@ import express from "express";
 const router = express.Router();
 
 router
-.route("/:homeId")
+.route("/home/:homeId")
 .get(async (req, res) => {
   try {
     const devices = await deviceData.getAllDevices(req.params.homeId);
@@ -50,10 +50,11 @@ router
     const device = await deviceData.getDeviceById(req.params.id);
     return res.status(200).json(device);
   } catch (e) {
+    console.log(e)
     return res.status(404).json({ error: e });
   }
 })
-.put(async (req, res) => {
+.patch(async (req, res) => {
   try {
     req.params.id = validateId(req.params.id);
   } catch (e) {

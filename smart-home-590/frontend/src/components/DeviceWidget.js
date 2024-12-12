@@ -1,19 +1,24 @@
+import { Light } from "./Light"
+import { Lock } from "./Lock"
+import { ThermoStat } from "./Thermostat"
 
-export function DeviceWidget ({name, type, setting}) {
+export function DeviceWidget ({id, name, type, setting}) {
 
+    if(type == 'light'){
+        return(
+            <Light id={id} name={name} setting={setting}></Light>
+        )
+    }
     
-
-    return(
-        <>
-        <div className="card bg-primary text-primary-content w-fit h-fit">
-            <div className="card-body">
-                <h2 className="card-title">{name}</h2>
-                <p>{type}</p>
-                <div className="card-actions justify-end">
-                    <button className="btn">{setting}</button>
-                </div>
-            </div>
-        </div>
-        </>
-    )
+    if(type == 'lock'){
+        return(
+            <Lock id={id} name={name} setting={setting}></Lock>
+        )
+    }
+    
+    if(type == 'thermostat'){
+        return(
+            <ThermoStat id={id} name={name} setting={setting}></ThermoStat>
+        )
+    }
 }

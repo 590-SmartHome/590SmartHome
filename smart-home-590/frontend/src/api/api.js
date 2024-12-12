@@ -55,8 +55,17 @@ export async function verifyUser(user) {
   }
 }
 
-export async function getDevices() {
-  const response = await axios.get(`${URL}/devices`);
+export async function joinHome(userId, login) {
+  try {
+    const response = await axios.post(`${URL}/users/${userId}/homes`, login)
+    return response;
+  } catch (e) {
+    throw `${e.response.data}`;
+  }
+}
+
+export async function getDevices(homeId) {
+  const response = await axios.get(`${URL}/devices/home/${homeId}`);
     if(response.status === 200){
       return response.data;
     }
@@ -75,14 +84,19 @@ export async function getDevice(id) {
   }
 }
 
-export async function createDevice(device) {
-  const response = await axios.post(`${URL}/devices`, device);
+export async function createDevice(homeId, device) {
+  const response = await axios.post(`${URL}/devices/home/${homeId}`, device);
   return response;
 }
 
 export async function updateDevice(id, device) {
-  const response = await axios.put(`${URL}/devices/${id}`, device);
-  return response;
+  try {
+    const response = await axios.patch(`${URL}/devices/${id}`, device);
+    return response;
+  } catch (error) {
+    console.log(error)
+    throw `${error.response.statusText}`;
+  }
   
 }
 
