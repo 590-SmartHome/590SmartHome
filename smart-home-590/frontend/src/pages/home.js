@@ -34,7 +34,6 @@ function Home() {
         const decodedUser = jwt_decode.jwtDecode(token);
         setUser(decodedUser)
         setUserId(userId);
-        //console.log(decodedUser);
         let myhomes = await api.getHomes(decodedUser._id);
         let configHomes = [];
         myhomes.forEach(home => {
