@@ -11,5 +11,5 @@ Features
 - User-Friendly Interface: Clean and intuitive design for seamless interaction
 
 Technologies Used
-- Programming Languages: [e.g., Python, JavaScript]
+- Programming Languages: [e.g., HTML, JavaScript]
 - Tools: [e.g., Docker, Git, CircleCI]
