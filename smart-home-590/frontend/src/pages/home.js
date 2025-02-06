@@ -57,8 +57,8 @@ function Home() {
     //console.log(homes[home]);
     
     return (
-     <div className="flex flex-col gap-5 padding-10 w-full h-full">
-      <div className="flex gap-5 padding-10 w-full h-full">
+     <div className="flex flex-col gap-5 p-3 w-full h-full">
+      <div className="flex flex-col lg:flex-row gap-5 p-3 w-full h-full">
           <div className="card card-side bg-base-100 shadow-xl">
             <div className="card-body">
               <h2 className="card-title">Welcome {user.first_name}!</h2>
@@ -80,10 +80,10 @@ function Home() {
             <HomesPanel home={homes[home]} userId={userId}></HomesPanel>
           </div>
       </div>
-      <div className="card card-side bg-base-100 shadow-xl">
+      <div className="card bg-base-100 shadow-xl w-full">
         <div className="card-body">
           <h2 className="card-title">Edit Panel</h2>
-          <div className="flex flex-row gap-5">
+          <div className="flex flex-row gap-5 w-full min-h-fit">
             <AddHomePanel></AddHomePanel>
             <AddDevicePanel homes={homes}></AddDevicePanel>
           </div>

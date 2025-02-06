@@ -32,7 +32,7 @@ export function AddDevicePanel ({homes}){
 
     return (
         <>
-        <div className="card bg-base-200 padding-5 w-1/4 h-full shadow-xl">
+        <div className="card bg-base-200 padding-5 w-fit h-full shadow-xl">
             <div className="card-body">
                 <h2 className="card-title">Add a New Device</h2>
                 <div className="flex gap-5 w-full">
